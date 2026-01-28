@@ -1,5 +1,16 @@
+/* Wrapper for background */
+.global-bg-wrapper {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Default background gradient via CSS variable */
 .initial-background-color {
-    background: linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%);
+    width: 100%;
+    height: 100%;
+    background: var(--bg-gradient);
 }
 
 /* Animated Background Elements */
@@ -17,12 +28,13 @@
     animation: pulse 4s ease-in-out infinite;
 }
 
+/* Blob colors via CSS variables */
 .global-bg-blob-1 {
     top: 25%;
     left: 25%;
     width: 384px;
     height: 384px;
-    background: rgba(168, 85, 247, 0.3);
+    background: var(--blob-1);
     animation-delay: 0s;
 }
 
@@ -31,7 +43,7 @@
     right: 25%;
     width: 384px;
     height: 384px;
-    background: rgba(59, 130, 246, 0.2);
+    background: var(--blob-2);
     animation-delay: 1s;
 }
 
@@ -41,7 +53,7 @@
     transform: translate(-50%, -50%);
     width: 384px;
     height: 384px;
-    background: rgba(6, 182, 212, 0.2);
+    background: var(--blob-3);
     animation-delay: 2s;
 }
 
@@ -58,9 +70,38 @@
     position: absolute;
     width: 8px;
     height: 8px;
-    background: rgba(255, 255, 255, 0.4);
+    background: var(--particle);
     border-radius: 50%;
     animation: float 15s ease-in-out infinite;
 }
 
+/* Animations */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: scale(1.15);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+}
 
+@keyframes float {
+    0% {
+        transform: translateY(0px) translateX(0px);
+        opacity: 0.4;
+    }
+    50% {
+        transform: translateY(-40px) translateX(20px);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(0px) translateX(0px);
+        opacity: 0.4;
+    }
+}

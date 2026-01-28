@@ -25,6 +25,7 @@ const AnimatedBackground = () => {
 
   return (
     <div className="global-bg-wrapper" aria-hidden="true">
+      <div className="initial-background-color"/>
       <div className="global-background-elements">
         <div className="global-bg-blob global-bg-blob-1"></div>
         <div className="global-bg-blob global-bg-blob-2"></div>
