@@ -1,0 +1,29 @@
+package com.impostor.impostor.controller;
+
+import com.impostor.impostor.generated.api.ResultApi;
+import com.impostor.impostor.generated.model.ResultDTO;
+import com.impostor.impostor.service.VoteService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api")
+public class ResultController implements ResultApi {
+    private final VoteService voteService;
+
+    @Override
+    public ResponseEntity<ResultDTO> getResultsByGameId(
+        String gameId
+    ) {
+        ResultDTO resultDTO = voteService.getResultsByGameId(gameId);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(resultDTO);
+    }
+
+}

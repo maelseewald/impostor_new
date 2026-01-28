@@ -1,0 +1,426 @@
+openapi: 3.0.4
+info:
+  title: Impostor API
+  version: 1.0.0
+servers:
+  - url: /api/
+
+paths:
+  /game/{gameId}:
+    get:
+      summary: Retrieve a game
+      description: Get a specific game
+      operationId: getGameById
+      tags:
+        - Game
+      parameters:
+        - $ref: '#/components/parameters/GameIdParameter'
+      responses:
+        '200':
+          description: Game successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameDTO'
+        '404':
+          description: Game not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /game/create:
+    post:
+      summary: Create a game
+      description: Create a new game
+      operationId: createGame
+      tags:
+        - Game
+      responses:
+        '201':
+          description: Game successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameDTO'
+        '400':
+          description: Invalid input (e.g., missing required fields)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /game/updategameword/{gameId}:
+    put:
+      summary: Update the Game-word
+      description: Update the Game-word
+      operationId: UpdateGameWord
+      tags:
+        - Game
+      parameters:
+        - $ref: '#/components/parameters/GameIdParameter'
+      responses:
+        '200':
+          description: Game-word successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameDTO'
+        '404':
+          description: Game not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+
+  /player/{gameId}:
+    get:
+      summary: Retrieve Player from a game
+      description: Get Players from a specific game
+      operationId: getPlayersByGameId
+      tags:
+        - Player
+      parameters:
+        - $ref: '#/components/parameters/GameIdParameter'
+      responses:
+        '200':
+          description: Players successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlayerDTO'
+        '404':
+          description: Game not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /player/create:
+    post:
+      summary: Create a Player
+      description: Create a new Player
+      operationId: createPlayer
+      tags:
+        - Player
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayerDTO'
+      responses:
+        '201':
+          description: Player successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerDTO'
+        '400':
+          description: Invalid input (e.g., missing required fields)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /player/delete/{token}:
+    delete:
+      summary: delete a Player
+      description: delete a Player
+      operationId: deletePlayer
+      tags:
+        - Player
+      parameters:
+        - $ref: '#/components/parameters/PlayerTokenParameter'
+      responses:
+        '200':
+          description: player successfully deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerDTO'
+        '404':
+          description: player not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /player/set-impostor/{gameId}:
+    put:
+      summary: Set a Player as Impostor
+      description: Set a Player as Impostor in a game
+      operationId: setImpostor
+      tags:
+        - Player
+      parameters:
+        - $ref: '#/components/parameters/GameIdParameter'
+      responses:
+        '200':
+          description: Impostor successfully set
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerDTO'
+        '404':
+          description: Game not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /mainword/{mainWordId}:
+    get:
+      summary: Retrieve a main word
+      description: Get a specific main word by its ID
+      operationId: getMainWord
+      tags:
+        - MainWord
+      parameters:
+        - $ref: '#/components/parameters/MainWordIdParameter'
+      responses:
+        '200':
+          description: MainWord successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MainWordDTO'
+        '404':
+          description: MainWord not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /playerword/{gameId}:
+    get:
+      summary: Retrieve a PlayerWord
+      description: Get a specific PlayerWord by GameID
+      operationId: getPlayerWords
+      tags:
+        - PlayerWord
+      parameters:
+        - $ref: '#/components/parameters/GameIdParameter'
+      responses:
+        '200':
+          description: PlayerWord successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlayerWordDTO'
+        '404':
+          description: Game not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /vote/{gameId}:
+    post:
+      summary: Vote for a Player
+      description: Vote for a Player in a game
+      operationId: voteForPlayer
+      tags:
+        - Vote
+      parameters:
+        - $ref: '#/components/parameters/GameIdParameter'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoteRequestDTO'
+      responses:
+        '200':
+          description: Vote successfully cast
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/VoteDTO'
+        '404':
+          description: Game not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /result/get/{gameId}:
+    get:
+      summary: Get Results for a Game
+      description: Retrieve all results for a specific game
+      operationId: getResultsByGameId
+      tags:
+        - Result
+      parameters:
+        - $ref: '#/components/parameters/GameIdParameter'
+      responses:
+        '200':
+          description: Results successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultDTO'
+        '404':
+          description: Game not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /vote/get/{gameId}:
+    get:
+      summary: Get Votes for a Game
+      description: Retrieve all votes for a specific game
+      operationId: getVotesByGameId
+      tags:
+        - Vote
+      parameters:
+        - $ref: '#/components/parameters/GameIdParameter'
+      responses:
+        '200':
+          description: Votes successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VoteDTO'
+        '404':
+          description: Game not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  parameters:
+    GameIdParameter:
+      name: gameId
+      required: true
+      in: path
+      schema:
+        type: string
+        description: The id of the game
+
+    PlayerTokenParameter:
+      name: token
+      required: true
+      in: path
+      schema:
+        type: string
+        description: The token of the player
+
+    MainWordIdParameter:
+      name: mainWordId
+      required: true
+      in: path
+      schema:
+        type: integer
+        description: The id of the main word
+
+  schemas:
+    GameDTO:
+      type: object
+      properties:
+        gameId:
+          type: string
+        mainWord:
+          type: string
+        status:
+          type: string
+        currentPlayerId:
+          type: integer
+
+    PlayerDTO:
+      type: object
+      required:
+        - gameId
+        - name
+      properties:
+        playerId:
+          type: integer
+        gameId:
+          type: string
+        name:
+          type: string
+        isImpostor:
+          type: boolean
+        isHost:
+          type: boolean
+        playerToken:
+          type: string
+
+    MainWordDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        word:
+          type: string
+
+    PlayerWordDTO:
+      type: object
+      properties:
+        word:
+          type: string
+        playerToken:
+          type: string
+        gameId:
+          type: string
+        playerId:
+          type: integer
+        playerName:
+          type: string
+
+    VoteDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        gameId:
+          type: string
+        voterId:
+          type: integer
+        votedPlayerId:
+            type: integer
+
+    ResultDTO:
+      type: object
+      properties:
+        game:
+          $ref: '#/components/schemas/GameDTO'
+        votes:
+          type: array
+          items:
+            $ref: '#/components/schemas/VoteDTO'
+
+
+    VoteRequestDTO:
+      type: object
+      properties:
+        voted_for:
+          type: string
+        playerToken:
+          type: string
+
+    RestartRequestDTO:
+      type: object
+      properties:
+        playerToken:
+          type: string
+        gameId:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+
+

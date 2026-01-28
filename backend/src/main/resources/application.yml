@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: "impostor"
+  datasource:
+    url: "jdbc:postgresql://localhost:16545/impostor?currentSchema=impostor"
+    username: "postgres"
+    password: "postgres"
+    driver-class-name: "org.postgresql.Driver"
+  flyway:
+    url: "${spring.datasource.url}"
+    user: "${spring.datasource.username}"
+    password: "${spring.datasource.password}"
+    locations: "classpath:db/migration"
+    ignore-migration-patterns: '*:*'
+    out-of-order: true
+logging:
+  level:
+    root: "info"
+server:
+  port: 9769
+socket:
+  host: localhost
+  port: 6861
