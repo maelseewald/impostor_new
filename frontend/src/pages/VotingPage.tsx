@@ -5,12 +5,12 @@
  * Description: VotingPage component for the game, where players can vote for the impostor based on submitted words.
  */
 
-import {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
-import socket from "../socket";
-import "../styles/VotingPage.css";
-import {checkGameStatusAndRedirect} from "../utils/checkGameStatusAndRedirect.ts";
-import ErrorDisplay from "../components/ErrorDisplay.tsx";
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import socket from '../socket';
+import '../styles/VotingPage.css';
+import { checkGameStatusAndRedirect } from '../utils/checkGameStatusAndRedirect.ts';
+import ErrorDisplay from '../components/ErrorDisplay.tsx';
 
 type WordEntry = {
     playerName: string;
@@ -40,23 +40,6 @@ const VotingPage = () => {
     const {gameId} = useParams();
     const navigate = useNavigate();
 
-    // Create floating particles
-    useEffect(() => {
-        const particlesContainer = document.querySelector(".floating-particles");
-        if (particlesContainer) {
-            particlesContainer.innerHTML = "";
-
-            for (let i = 0; i < 15; i++) {
-                const particle = document.createElement("div");
-                particle.className = "particle";
-                particle.style.left = `${Math.random() * 100}%`;  // NOSONAR
-                particle.style.top = `${Math.random() * 100}%`;  // NOSONAR
-                particle.style.animationDelay = `${Math.random() * 10}s`;  // NOSONAR
-                particle.style.animationDuration = `${8 + Math.random() * 4}s`;  // NOSONAR
-                particlesContainer.appendChild(particle);
-            }
-        }
-    }, []);
 
     // Check game status and redirect if necessary
     useEffect(() => {
@@ -192,17 +175,7 @@ const VotingPage = () => {
 
     // Show the  voting page content
     return (
-        <div className="voting-page">
-            {/* Animated Background Elements */}
-            <div className="background-elements">
-                <div className="bg-blob bg-blob-1"></div>
-                <div className="bg-blob bg-blob-2"></div>
-                <div className="bg-blob bg-blob-3"></div>
-            </div>
-
-            {/* Floating Particles */}
-            <div className="floating-particles"></div>
-
+      <div className="voting-page initial-background-color">
             {/* Header */}
             <div className="voting-header">
                 <h1 className="voting-title"> Wer ist der Impostor?</h1>

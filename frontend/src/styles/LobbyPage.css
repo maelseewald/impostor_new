@@ -27,64 +27,6 @@ body {
     padding: 2rem;
 }
 
-/* Animated Background Elements */
-.lobby-background-elements {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-}
-
-.lobby-bg-blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    animation: pulse 4s ease-in-out infinite;
-}
-
-.lobby-bg-blob-1 {
-    top: 20%;
-    left: 20%;
-    width: 300px;
-    height: 300px;
-    background: rgba(168, 85, 247, 0.3);
-    animation-delay: 0s;
-}
-
-.lobby-bg-blob-2 {
-    bottom: 20%;
-    right: 20%;
-    width: 300px;
-    height: 300px;
-    background: rgba(59, 130, 246, 0.2);
-    animation-delay: 1s;
-}
-
-.lobby-bg-blob-3 {
-    top: 60%;
-    left: 60%;
-    transform: translate(-50%, -50%);
-    width: 250px;
-    height: 250px;
-    background: rgba(6, 182, 212, 0.2);
-    animation-delay: 2s;
-}
-
-/* Floating Particles */
-.lobby-floating-particles {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-.lobby-particle {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    animation: float 8s ease-in-out infinite;
-}
 
 /* Header Section */
 .lobby-header {

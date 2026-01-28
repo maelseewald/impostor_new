@@ -4,15 +4,15 @@
  * Version: 1.0
  * Description: This ist the GamePage where Players can send their word.
  */
-import {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
-import socket from "../socket";
-import "../styles/GamePage.css";
-import {checkGameStatusAndRedirect} from "../utils/checkGameStatusAndRedirect.ts";
-import {Profile} from "../components/icons/Profile";
-import {ProfileWithCrown} from "../components/icons/ProfileWithCrown.tsx";
-import {ImposterIcon} from "../components/icons/ImposterIcon.tsx";
-import {SendIcon} from "../components/icons/SendIcon.tsx";
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import socket from '../socket';
+import '../styles/GamePage.css';
+import { checkGameStatusAndRedirect } from '../utils/checkGameStatusAndRedirect.ts';
+import { Profile } from '../components/icons/Profile';
+import { ProfileWithCrown } from '../components/icons/ProfileWithCrown.tsx';
+import { ImposterIcon } from '../components/icons/ImposterIcon.tsx';
+import { SendIcon } from '../components/icons/SendIcon.tsx';
 
 type Player = {
     playerId: number;
@@ -58,24 +58,6 @@ const GamePage = () => {
             return () => clearTimeout(timer);
         }
     }, [error]);
-
-    // Create floating particles
-    useEffect(() => {
-        const particlesContainer = document.querySelector(".floating-particles");
-        if (particlesContainer) {
-            particlesContainer.innerHTML = "";
-
-            for (let i = 0; i < 12; i++) {
-                const particle = document.createElement("div");
-                particle.className = "particle";
-                particle.style.left = `${Math.random() * 100}%`;  // NOSONAR
-                particle.style.top = `${Math.random() * 100}%`;  // NOSONAR
-                particle.style.animationDelay = `${Math.random() * 8}s`;  // NOSONAR
-                particle.style.animationDuration = `${6 + Math.random() * 4}s`;  // NOSONAR
-                particlesContainer.appendChild(particle);
-            }
-        }
-    }, []);
 
     // Initializes the game: Loads game and player data, sets player status, and loads the secret word if applicable
     useEffect(() => {
@@ -283,14 +265,6 @@ const GamePage = () => {
     // Show the GamePage
     return (
         <div className="game-page">
-            {/* Animated Background Elements */}
-            <div className="background-elements">
-                <div className="bg-blob bg-blob-1"></div>
-                <div className="bg-blob bg-blob-2"></div>
-                <div className="bg-blob bg-blob-3"></div>
-            </div>
-            {/* Floating Particles */}
-            <div className="floating-particles"></div>
             {/* Game Panel */}
             <div className="game-content">
                 {/* Game Content */}

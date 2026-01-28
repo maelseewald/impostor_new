@@ -5,23 +5,22 @@
  * Description: This component represents the lobby page of the game, where players can see
  * the game code, player list, and controls to start or leave the game.
  */
-import {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
-import socket from "../socket";
-import "../styles/LobbyPage.css";
-import {checkGameStatusAndRedirect} from "../utils/checkGameStatusAndRedirect.ts";
-import {handleLeaveGame} from "../utils/handleLeaveGame.ts";
-import LeaveButton from "../components/LeaveButton.tsx";
-import ErrorDisplay from "../components/ErrorDisplay.tsx";
-import {Profile} from "../components/icons/Profile";
-import {ProfileWithCrown} from "../components/icons/ProfileWithCrown.tsx";
-import {CheckIcon} from "../components/icons/CheckIcon.tsx";
-import {CopyIcon} from "../components/icons/CopyIcon.tsx";
-import {PlayIcon} from "../components/icons/PlayIcon.tsx";
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import socket from '../socket';
+import '../styles/LobbyPage.css';
+import { checkGameStatusAndRedirect } from '../utils/checkGameStatusAndRedirect.ts';
+import { handleLeaveGame } from '../utils/handleLeaveGame.ts';
+import LeaveButton from '../components/LeaveButton.tsx';
+import ErrorDisplay from '../components/ErrorDisplay.tsx';
+import { Profile } from '../components/icons/Profile';
+import { ProfileWithCrown } from '../components/icons/ProfileWithCrown.tsx';
+import { CheckIcon } from '../components/icons/CheckIcon.tsx';
+import { CopyIcon } from '../components/icons/CopyIcon.tsx';
+import { PlayIcon } from '../components/icons/PlayIcon.tsx';
 
-import {Tooltip as ReactTooltip} from "react-tooltip";
+import { Tooltip as ReactTooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
-
 
 type Player = {
     id: number;
@@ -46,24 +45,6 @@ const LobbyPage = () => {
         socket.emit("updateLobby", gameId);
     }, [gameId, navigate]);
 
-    // Create floating particles
-    useEffect(() => {
-        const particlesContainer = document.querySelector(
-            ".lobby-floating-particles"
-        );
-        if (particlesContainer) {
-            particlesContainer.innerHTML = "";
-            for (let i = 0; i < 15; i++) {
-                const particle = document.createElement("div");
-                particle.className = "lobby-particle";
-                particle.style.left = `${Math.random() * 100}%`; // NOSONAR
-                particle.style.top = `${Math.random() * 100}%`; // NOSONAR
-                particle.style.animationDelay = `${Math.random() * 6}s`; // NOSONAR
-                particle.style.animationDuration = `${4 + Math.random() * 4}s`; // NOSONAR
-                particlesContainer.appendChild(particle);
-            }
-        }
-    }, []);
 
     // To start the game and get an impostor, a game word and show all players the GamePage.
     const startGame = async () => {
@@ -139,16 +120,6 @@ const LobbyPage = () => {
     // Show the LobbyPage with player list, and controls
     return (
         <div className="lobby-page">
-            {/* Animated Background Elements */}
-            <div className="lobby-background-elements">
-                <div className="lobby-bg-blob lobby-bg-blob-1"></div>
-                <div className="lobby-bg-blob lobby-bg-blob-2"></div>
-                <div className="lobby-bg-blob lobby-bg-blob-3"></div>
-            </div>
-
-            {/* Floating Particles */}
-            <div className="lobby-floating-particles"></div>
-
             {/* Header Section */}
             <div className="lobby-header">
                 <div className="lobby-game-code-container">

@@ -1,15 +1,15 @@
 /**
  * Description: This component displays the voting results of a game, including the impostor's identity, voting statistics, and allows the host to restart the game or leave the lobby.
  */
-import {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
-import socket from "../socket";
-import "../styles/ResultPage.css";
-import {checkGameStatusAndRedirect} from "../utils/checkGameStatusAndRedirect.ts";
-import {handleLeaveGame} from "../utils/handleLeaveGame.ts";
-import LeaveButton from "../components/LeaveButton.tsx";
-import ErrorDisplay from "../components/ErrorDisplay.tsx";
-import {PlayIcon} from "../components/icons/PlayIcon.tsx";
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import socket from '../socket';
+import '../styles/ResultPage.css';
+import { checkGameStatusAndRedirect } from '../utils/checkGameStatusAndRedirect.ts';
+import { handleLeaveGame } from '../utils/handleLeaveGame.ts';
+import LeaveButton from '../components/LeaveButton.tsx';
+import ErrorDisplay from '../components/ErrorDisplay.tsx';
+import { PlayIcon } from '../components/icons/PlayIcon.tsx';
 
 type PlayerDTO = {
     playerId: number;
@@ -53,7 +53,6 @@ type GameResult = {
     game: GameDTO;
 };
 
-const PARTICLE_COUNT = 20;
 const CONFETTI_COUNT = 30;
 
 const ResultsPage = () => {
@@ -108,16 +107,6 @@ const ResultsPage = () => {
 
         particlesContainer.innerHTML = "";
 
-        // Create regular particles
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
-            const particle = document.createElement("div");
-            particle.className = "particle";
-            particle.style.left = `${Math.random() * 100}%`; //NOSONAR
-            particle.style.top = `${Math.random() * 100}%`;//NOSONAR
-            particle.style.animationDelay = `${Math.random() * 12}s`;//NOSONAR
-            particle.style.animationDuration = `${10 + Math.random() * 5}s`;//NOSONAR
-            particlesContainer.appendChild(particle);
-        }
 
         // Create confetti if impostor was found
         if (mostVotes && mostVotes.voterId === impostorPlayer?.playerId) {
@@ -275,12 +264,6 @@ const ResultsPage = () => {
 
     return (
         <div className="results-page">
-            <div className="background-elements">
-                <div className="bg-blob bg-blob-1"></div>
-                <div className="bg-blob bg-blob-2"></div>
-                <div className="bg-blob bg-blob-3"></div>
-            </div>
-            <div className="floating-particles"></div>
 
             <div className="results-header">
                 <h1 className="results-title">Spielergebnis</h1>

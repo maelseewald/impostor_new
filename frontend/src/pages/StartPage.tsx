@@ -1,12 +1,11 @@
 "use client";
 
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import "../styles/StartPage.css";
-import ErrorDisplay from "../components/ErrorDisplay.tsx";
-import {PlusIcon} from "../components/icons/PlusIcon";
-import {Profile} from "../components/icons/Profile";
-
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../styles/StartPage.css';
+import ErrorDisplay from '../components/ErrorDisplay.tsx';
+import { PlusIcon } from '../components/icons/PlusIcon';
+import { Profile } from '../components/icons/Profile';
 
 const StartPage = () => {
     const navigate = useNavigate();
@@ -14,25 +13,7 @@ const StartPage = () => {
     const [gameId, setGameId] = useState("");
     const [error, setError] = useState<string | null>();
 
-    // Create floating particles
-    useEffect(() => {
-        const particlesContainer = document.querySelector(
-            ".start-floating-particles"
-        );
-        if (particlesContainer) {
-            particlesContainer.innerHTML = "";
 
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement("div");
-                particle.className = "particle";
-                particle.style.left = `${Math.random() * 100}%`;  // NOSONAR
-                particle.style.top = `${Math.random() * 100}%`;  // NOSONAR
-                particle.style.animationDelay = `${Math.random() * 5}s`;  // NOSONAR
-                particle.style.animationDuration = `${3 + Math.random() * 4}s`;  // NOSONAR
-                particlesContainer.appendChild(particle);
-            }
-        }
-    }, []);
 
     // Handle game creation
     const handleCreateGame = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -174,18 +155,7 @@ const StartPage = () => {
 
     // Render the StartPage component
     return (
-        <div className="start-page">
-            {/* Animated Background Elements */}
-            <div className="start-background-elements">
-                <div className="start-bg-blob start-bg-blob-1"></div>
-                <div className="start-bg-blob start-bg-blob-2"></div>
-                <div className="start-bg-blob start-bg-blob-3"></div>
-            </div>
-
-            {/* Floating Particles */}
-            <div className="start-floating-particles"></div>
-
-            {/* Main Content */}
+      <div className="start-page background-color initial-background-color">
             <div className="start-header-section">
                 <h1 className="start-main-title">Impostor Game</h1>
                 <p className="start-subtitle">A word. An impostor. </p>
