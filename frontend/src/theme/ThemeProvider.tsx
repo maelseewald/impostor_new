@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { type ThemeName, themes } from './themes';
+import React, {createContext, useContext, useEffect, useMemo, useState} from 'react';
+import {type ThemeName, themes} from './themes';
 
 type ThemeContextType = {
   theme: ThemeName;
@@ -9,6 +9,7 @@ type ThemeContextType = {
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => {
   const ctx = useContext(ThemeContext);
   if (!ctx) {
@@ -32,11 +33,22 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
     localStorage.setItem('theme', t.name);
     const root = document.documentElement;
-    root.style.setProperty('--bg-gradient', t.gradient);
+    root.style.setProperty('--bg-gradient', t.bgGradient);
     root.style.setProperty('--blob-1', t.blob1);
     root.style.setProperty('--blob-2', t.blob2);
     root.style.setProperty('--blob-3', t.blob3);
     root.style.setProperty('--particle', t.particle);
+    root.style.setProperty('--title-gradient', t.tiltedGradient);
+    root.style.setProperty('--text-color', t.textColor);
+    root.style.setProperty('--text-secColor', t.textSecColor);
+    root.style.setProperty('--box-shadowColor', t.boxShadowColor);
+    root.style.setProperty('--box-insetShadowColor', t.boxInsetShadowColor);
+    root.style.setProperty('--text-placeholderColor', t.textPlaceholderColor);
+      root.style.setProperty('--button-accentColor1', t.buttonAccentColor1);
+      root.style.setProperty('--button-accentColor1decent', t.buttonAccentColor1Decent);
+      root.style.setProperty('--button-accentColor2', t.buttonAccentColor2);
+      root.style.setProperty('--button-accentColor2decent', t.buttonAccentColor2Decent);
+
   }, [theme]);
 
   const cycleTheme = () => {
