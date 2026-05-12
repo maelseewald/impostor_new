@@ -56,13 +56,13 @@ dependencies {
 }
 
 ext {
-    databaseName = 'impostor'
-    databaseUsername = 'postgres'
-    databasePassword = 'postgres'
-    databaseOwnerUsername = 'postgres'
-    databaseOwnerPassword = 'postgres'
-    databaseUrl = "jdbc:postgresql://localhost:16545/${databaseName}"
-    databaseApplRole = 'rl_impostor_app'
+    databaseName = System.env.DB_NAME ?: 'impostor'
+    databaseUsername = System.env.DB_USERNAME ?: 'postgres'
+    databasePassword = System.env.DB_PASSWORD ?: 'postgres'
+    databaseOwnerUsername = System.env.DB_OWNER_USERNAME ?: 'postgres'
+    databaseOwnerPassword = System.env.DB_OWNER_PASSWORD ?: 'postgres'
+    databaseUrl = System.env.DB_URL ?: "jdbc:postgresql://localhost:16545/${databaseName}"
+    databaseApplRole = System.env.DB_APPL_ROLE ?: 'rl_impostor_app'
 }
 
 flyway {

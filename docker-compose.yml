@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  impostor-db:
+    image: postgres:17
+    container_name: impostor-postgres-db
+    ports:
+      - "16545:5432"
+    environment:
+      POSTGRES_DB: impostor
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - impostor-db-data:/var/lib/postgresql/data
+
+  impostor-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: impostor-backend
+    ports:
+      - "${SERVER_PORT:-9769}:${SERVER_PORT:-9769}"
+      - "${SOCKET_PORT:-6861}:${SOCKET_PORT:-6861}"
+    env_file:
+      - ./backend/.env
+    environment:
+      DB_URL: jdbc:postgresql://impostor-db:5432/impostor?currentSchema=impostor
+    depends_on:
+      - impostor-db
+
+  impostor-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: impostor-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - impostor-backend
+
+volumes:
+  impostor-db-data:

@@ -20,6 +20,8 @@ frontend/.env
 frontend/.env.*local
 frontend/.env.development.local
 .envrc
+backend/.env
+.env
 # === Vite cache ===
 .vite/
 

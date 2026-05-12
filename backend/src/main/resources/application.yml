@@ -2,9 +2,9 @@ spring:
   application:
     name: "impostor"
   datasource:
-    url: "jdbc:postgresql://localhost:16545/impostor?currentSchema=impostor"
-    username: "postgres"
-    password: "postgres"
+    url: "${DB_URL}"
+    username: "${DB_USERNAME}"
+    password: "${DB_PASSWORD}"
     driver-class-name: "org.postgresql.Driver"
   flyway:
     url: "${spring.datasource.url}"
@@ -17,7 +17,7 @@ logging:
   level:
     root: "info"
 server:
-  port: 9769
+  port: ${SERVER_PORT}
 socket:
-  host: localhost
-  port: 6861
+  host: ${SOCKET_HOST}
+  port: ${SOCKET_PORT}
