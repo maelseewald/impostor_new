@@ -10,7 +10,7 @@ spring:
     url: "${spring.datasource.url}"
     user: "${spring.datasource.username}"
     password: "${spring.datasource.password}"
-    locations: "classpath:db/migration"
+    locations: "classpath:db/setup,classpath:db/migration,classpath:db/testdata"
     ignore-migration-patterns: '*:*'
     out-of-order: true
 logging:
