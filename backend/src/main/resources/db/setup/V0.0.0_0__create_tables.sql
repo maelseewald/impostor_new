@@ -24,8 +24,8 @@ CREATE TABLE IF NOT EXISTS player (
     id SERIAL PRIMARY KEY,
     game_id TEXT NOT NULL,
     name TEXT NOT NULL,
-    is_impostor INTEGER NOT NULL DEFAULT 0,
-    is_host INTEGER NOT NULL DEFAULT 0,
+    is_impostor BOOLEAN NOT NULL DEFAULT FALSE,
+    is_host BOOLEAN NOT NULL DEFAULT FALSE,
     player_token TEXT NOT NULL UNIQUE
 );
 

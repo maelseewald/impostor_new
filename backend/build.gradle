@@ -69,9 +69,7 @@ flyway {
     url = "${databaseUrl}"
     user = "${databaseUsername}"
     password = "${databasePassword}"
-    locations = ['/db/migration',
-                 '/db/setup',
-                 '/db/testdata']
+    locations = ['/db/setup']
     schemas = ['impostor']
     cleanDisabled = true
     placeholders = ['db.name': "${databaseName}", 'db.role.application': "${databaseApplRole}"]
