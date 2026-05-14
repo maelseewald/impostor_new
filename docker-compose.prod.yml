@@ -1,45 +1,43 @@
-version: '3.9'
-
 services:
   impostor-db:
     image: postgres:17
     container_name: impostor-postgres-db
     restart: unless-stopped
-    ports:
-      - "16545:5432"
     environment:
       POSTGRES_DB: impostor
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
     volumes:
       - impostor-db-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - backend-db
 
   impostor-backend:
     image: ghcr.io/maelseewald/impostor-backend:latest
     container_name: impostor-backend
     restart: unless-stopped
-    ports:
-      - "${SERVER_PORT:-9769}:${SERVER_PORT:-9769}"
-      - "${SOCKET_PORT:-6861}:${SOCKET_PORT:-6861}"
     environment:
       DB_URL: jdbc:postgresql://impostor-db:5432/impostor?currentSchema=impostor
-      DB_USERNAME: postgres
-      DB_PASSWORD: postgres
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
       DB_NAME: impostor
-      DB_OWNER_USERNAME: postgres
-      DB_OWNER_PASSWORD: postgres
+      DB_OWNER_USERNAME: ${DB_OWNER_USERNAME:-postgres}
+      DB_OWNER_PASSWORD: ${DB_OWNER_PASSWORD:-postgres}
       DB_APPL_ROLE: rl_impostor_app
       SERVER_PORT: ${SERVER_PORT:-9769}
-      SOCKET_HOST: impostor-backend
+      SOCKET_HOST: 0.0.0.0
       SOCKET_PORT: ${SOCKET_PORT:-6861}
     depends_on:
       impostor-db:
         condition: service_healthy
+    networks:
+      - frontend-backend
+      - backend-db
 
   impostor-frontend:
     image: ghcr.io/maelseewald/impostor-frontend:latest
@@ -49,6 +47,12 @@ services:
       - "80:80"
     depends_on:
       - impostor-backend
+    networks:
+      - frontend-backend
 
 volumes:
   impostor-db-data:
+
+networks:
+  frontend-backend:
+  backend-db:

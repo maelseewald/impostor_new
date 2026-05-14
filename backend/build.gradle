@@ -37,7 +37,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-database-postgresql'
     compileOnly 'org.projectlombok:lombok'
@@ -73,7 +73,7 @@ flyway {
                  '/db/setup',
                  '/db/testdata']
     schemas = ['impostor']
-    cleanDisabled = false
+    cleanDisabled = true
     placeholders = ['db.name': "${databaseName}", 'db.role.application': "${databaseApplRole}"]
 }
 
