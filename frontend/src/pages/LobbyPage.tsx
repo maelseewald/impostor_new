@@ -1,14 +1,6 @@
-/**
- * Author: Maël Seewald
- * Date: 2025-06-25
- * Version: 1.0
- * Description: This component represents the lobby page of the game, where players can see
- * the game code, player list, and controls to start or leave the game.
- */
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import socket from '../socket';
-import '../styles/LobbyPage.css';
 import { checkGameStatusAndRedirect } from '../utils/checkGameStatusAndRedirect.ts';
 import { handleLeaveGame } from '../utils/handleLeaveGame.ts';
 import LeaveButton from '../components/LeaveButton.tsx';
@@ -39,35 +31,22 @@ const LobbyPage = () => {
     const [copied, setCopied] = useState(false);
     const [ready, setReady] = useState(false);
 
-    // Check game status and redirect if necessary
     useEffect(() => {
         checkGameStatusAndRedirect(gameId, navigate, setError);
         socket.emit("updateLobby", gameId);
     }, [gameId, navigate]);
 
-
-    // To start the game and get an impostor, a game word and show all players the GamePage.
     const startGame = async () => {
         if (!ready) {
             setError("Mindestens 3 Spieler benötigt um das Spiel zu starten");
-            return
+            return;
         }
         try {
-            const gameRes = await fetch(`/api/game/updategameword/${gameId}`, {
-                method: "PUT",
-            });
-            if (!gameRes.ok) {
-                setError("Fehler beim Starten des Spiels");
-                return;
-            }
+            const gameRes = await fetch(`/api/game/updategameword/${gameId}`, { method: "PUT" });
+            if (!gameRes.ok) { setError("Fehler beim Starten des Spiels"); return; }
 
-            const impostorRes = await fetch(`/api/player/set-impostor/${gameId}`, {
-                method: "PUT",
-            });
-            if (!impostorRes.ok) {
-                setError("Fehler beim starten des Spiels");
-                return;
-            }
+            const impostorRes = await fetch(`/api/player/set-impostor/${gameId}`, { method: "PUT" });
+            if (!impostorRes.ok) { setError("Fehler beim starten des Spiels"); return; }
 
             socket.emit("startGame", gameId);
         } catch {
@@ -86,7 +65,6 @@ const LobbyPage = () => {
         }
     };
 
-    // Manages lobby events: updates players, handles game start or termination, and cleans up on exit
     useEffect(() => {
         socket.emit("updateLobby", gameId);
 
@@ -95,9 +73,7 @@ const LobbyPage = () => {
             setReady(Array.isArray(data) && data.length >= 3 && data.length < 10);
         });
 
-        socket.on("gameStarted", () => {
-            navigate(`/game/${gameId}`);
-        });
+        socket.on("gameStarted", () => navigate(`/game/${gameId}`));
 
         socket.on("gameDeleted", () => {
             setError("Der Host hat die Lobby verlassen. Das Spiel wurde beendet.");
@@ -111,88 +87,77 @@ const LobbyPage = () => {
         };
     }, [gameId, navigate]);
 
-    // Find the player you are and check if they are the host
-    const currentPlayer = players.find(
-        (p) => p.playerToken === currentPlayerToken
-    );
+    const currentPlayer = players.find((p) => p.playerToken === currentPlayerToken);
     const isHost = currentPlayer?.isHost === true;
 
-    // Show the LobbyPage with player list, and controls
     return (
-        <div className="lobby-page">
-            {/* Header Section */}
-            <div className="lobby-header">
-                <div className="lobby-game-code-container">
-                    <h1 className="lobby-game-code-title">Lobby</h1>
-                    <button
-                        className="lobby-game-code"
-                        onClick={handleCopy}
-                        type="button"
-                    >
-                        <span className="lobby-Id">{gameId}</span>
+        <div className="min-h-screen relative overflow-hidden flex flex-col items-center justify-center p-8 select-none max-md:p-4">
+
+            {/* Header */}
+            <div className="text-center mb-12 z-10 relative">
+                <div className="flex items-center justify-center gap-4 mb-4 max-[480px]:flex-col max-[480px]:gap-2">
+                    <h1 className="text-h2 font-bold title-gradient-text">Lobby</h1>
+                    <button className="lobby-game-code-btn" onClick={handleCopy} type="button">
+                        <span className="lobby-id-text">{gameId}</span>
                         {copied ? (
-                            <span className="lobby-copy-message"><CheckIcon/></span>
+                            <span className="lobby-copy-icon"><CheckIcon /></span>
                         ) : (
-                            <span className="lobby-copy-message"><CopyIcon/></span>
+                            <span className="lobby-copy-icon"><CopyIcon /></span>
                         )}
                     </button>
                 </div>
 
-
-                <p className="lobby-status-text">
+                <p className="text-body-lg text-app-sec font-light mt-4">
                     {isHost
                         ? "Du bist der Host - starte das Spiel wenn alle bereit sind"
                         : "Warte bis der Host das Spiel startet"}
                 </p>
 
                 {!isHost && (
-                    <div className="lobby-waiting-indicator">
-                        <div className="lobby-waiting-dot"></div>
-                        <div className="lobby-waiting-dot"></div>
-                        <div className="lobby-waiting-dot"></div>
+                    <div className="flex items-center justify-center gap-2 mt-4">
+                        <div className="lobby-waiting-dot" />
+                        <div className="lobby-waiting-dot" />
+                        <div className="lobby-waiting-dot" />
                     </div>
                 )}
             </div>
 
-            {/* Players Section */}
-            <div className="lobby-players-section">
-                <div className="lobby-players-title">{players.length} Spieler</div>
-                <div className="lobby-players-grid">
-                    {Array.isArray(players) &&
-                        players.map((player) => (
-                            <div
-                                key={player.playerToken}
-                                className="lobby-player-card"
-                            >
-                                <div
-                                    className="lobby-player-avatar"
-                                >
-                                    {player.isHost ? <ProfileWithCrown/> : <Profile/>}
-                                </div>
-
-                                <div className="lobby-player-name">{player.name}</div>
-
-                                <div className="lobby-player-status">
-                                    {player.playerToken === currentPlayerToken && "(Du) "}
-                                    {player.isHost && "Host"}
-                                    {!player.isHost &&
-                                        player.playerToken !== currentPlayerToken && <br/>}
-                                </div>
+            {/* Spieler */}
+            <div className="z-10 relative mb-12 w-full max-w-[80rem]">
+                <div className="text-center text-h4 font-semibold text-app-text mb-8 flex items-center justify-center gap-2">
+                    {players.length} Spieler
+                </div>
+                <div className="flex flex-wrap justify-center items-center gap-6 max-w-full max-md:gap-4 max-sm:gap-3">
+                    {Array.isArray(players) && players.map((player) => (
+                        <div key={player.playerToken} className="lobby-player-card">
+                            <div className="w-[60px] h-[60px] rounded-full flex items-center justify-center mx-auto mb-4 relative isolate shadow-[inset_0_0_15px_-5px_#000] bg-transparent p-0">
+                                {player.isHost ? <ProfileWithCrown /> : <Profile />}
                             </div>
-                        ))}
+                            <div className="text-body-lg font-semibold text-app-text mb-2">{player.name}</div>
+                            <div className={`text-sm font-medium ${
+                                player.playerToken === currentPlayerToken
+                                    ? 'text-cyan font-semibold'
+                                    : player.isHost
+                                    ? 'text-warning font-semibold'
+                                    : 'text-app-sec'
+                            }`}>
+                                {player.playerToken === currentPlayerToken && "(Du) "}
+                                {player.isHost && "Host"}
+                                {!player.isHost && player.playerToken !== currentPlayerToken && <br />}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
 
-            {/* Controls Section */}
-            <div className="lobby-controls-section">
+            {/* Steuerung */}
+            <div className="z-10 w-[350px] relative flex gap-4 flex-wrap justify-center max-lg:flex-col max-lg:items-center">
                 {isHost && (
                     <div
-                        {...(ready
-                            ? {}
-                            : {
-                                "data-tooltip-id": "start-tooltip",
-                                "data-tooltip-content": "Mindestens 3 Spieler benötigt und Maximal 10 Spieler erlaubt",
-                            })}
+                        {...(ready ? {} : {
+                            "data-tooltip-id": "start-tooltip",
+                            "data-tooltip-content": "Mindestens 3 Spieler benötigt und Maximal 10 Spieler erlaubt",
+                        })}
                         style={{display: "inline-block", width: "100%"}}
                     >
                         <button
@@ -200,24 +165,19 @@ const LobbyPage = () => {
                             className="liquid-glass-button liquid-glass-button-green"
                             disabled={!ready}
                             type="button"
-                        ><PlayIcon/>Spiel Starten
+                        >
+                            <PlayIcon />Spiel Starten
                         </button>
-                        <ReactTooltip
-                            id="start-tooltip"
-                            place="top"
-                            className="custom-tooltip"
-                        />
+                        <ReactTooltip id="start-tooltip" place="top" className="custom-tooltip" />
                     </div>
                 )}
-
                 <LeaveButton
                     isHost={isHost}
-                    handleOnClick={() =>
-                        handleLeaveGame(currentPlayerToken, setError, gameId, navigate)
-                    }
+                    handleOnClick={() => handleLeaveGame(currentPlayerToken, setError, gameId, navigate)}
                 />
             </div>
-            <ErrorDisplay error={error} setError={setError}/>
+
+            <ErrorDisplay error={error} setError={setError} />
         </div>
     );
 };

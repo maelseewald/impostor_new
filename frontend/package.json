@@ -11,11 +11,13 @@
         "test": "echo \"No frontend tests available.\""
     },
     "dependencies": {
+        "@tailwindcss/vite": "^4.3.0",
         "react": "^19.1.0",
         "react-dom": "^19.1.0",
         "react-router-dom": "^7.7.1",
         "react-tooltip": "^5.29.1",
         "socket.io-client": "^4.8.1",
+        "tailwindcss": "^4.3.0",
         "vite-plugin-svgr": "^4.3.0"
     },
     "devDependencies": {

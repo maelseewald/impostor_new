@@ -1,13 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-import '../styles/AnimatedBackground.css';
 
 const AnimatedBackground = () => {
   useEffect(() => {
-    const particlesContainer = document.querySelector(
-      '.global-floating-particles',
-    );
+    const particlesContainer = document.querySelector('.global-floating-particles');
     if (particlesContainer) {
       particlesContainer.innerHTML = '';
 
@@ -24,15 +21,14 @@ const AnimatedBackground = () => {
   }, []);
 
   return (
-    <div className="global-bg-wrapper" aria-hidden="true">
-      <div className="initial-background-color"/>
-      <div className="global-background-elements">
-        <div className="global-bg-blob global-bg-blob-1"></div>
-        <div className="global-bg-blob global-bg-blob-2"></div>
-        <div className="global-bg-blob global-bg-blob-3"></div>
+    <div className="fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+      <div className="initial-background-color" />
+      <div className="absolute inset-0 pointer-events-none z-[1]">
+        <div className="absolute rounded-full blur-[80px] top-1/4 left-1/4 w-96 h-96 blob-animate blob-animate-1" />
+        <div className="absolute rounded-full blur-[80px] bottom-1/4 right-1/4 w-96 h-96 blob-animate blob-animate-2" />
+        <div className="absolute rounded-full blur-[80px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 blob-animate blob-animate-3" />
       </div>
-
-      <div className="global-floating-particles"></div>
+      <div className="global-floating-particles absolute inset-0 overflow-hidden pointer-events-none z-[1]" />
     </div>
   );
 };

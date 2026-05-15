@@ -1,0 +1,1160 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════
+   CSS Custom Properties
+   ThemeProvider überschreibt Theme-Vars zur Laufzeit
+   ═══════════════════════════════════════════════════ */
+:root {
+    --font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+    /* ── Schriftgrößen – hier ändern ── */
+    --font-size-hero: 4rem;
+    --font-size-h1: 3rem;
+    --font-size-h2: 2.5rem;
+    --font-size-h3: 2rem;
+    --font-size-h4: 1.5rem;
+    --font-size-subtitle: 1.25rem;
+    --font-size-body-lg: 1.125rem;
+    --font-size-body: 1rem;
+    --font-size-sm: 0.875rem;
+    --font-size-xs: 0.75rem;
+
+    /* Theme – wird von ThemeProvider zur Laufzeit überschrieben */
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%);
+    --blob-1: rgba(168, 85, 247, 0.30);
+    --blob-2: rgba(59, 130, 246, 0.20);
+    --blob-3: rgba(6, 182, 212, 0.20);
+    --particle: rgba(255, 255, 255, 0.40);
+    --title-gradient: linear-gradient(135deg, #ffffff 0%, #e9d5ff 50%, #a5f3fc 100%);
+    --text-color: #ffffff;
+    --text-secColor: rgba(255, 255, 255, 0.7);
+    --text-placeholderColor: rgba(255, 255, 255, 0.5);
+    --box-insetShadowColor: rgb(0, 0, 0);
+    --box-shadowColor: rgb(0, 0, 0);
+    --button-accentColor1: rgba(147, 51, 234, 0.8);
+    --button-accentColor1decent: rgba(147, 51, 234, 0.2);
+    --button-accentColor2: rgba(8, 145, 178, 0.8);
+    --button-accentColor2decent: rgba(8, 145, 178, 0.2);
+
+    /* Semantische Farben (theme-unabhängig) */
+    --color-success: #10b981;
+    --color-success-dark: #059669;
+    --color-success-darker: #047857;
+    --color-error: #ef4444;
+    --color-error-dark: #dc2626;
+    --color-error-darker: #b91c1c;
+    --color-warning: #fbbf24;
+    --color-warning-dark: #f59e0b;
+    --color-purple: #a855f7;
+    --color-cyan: #06b6d4;
+    --color-blue: #3b82f6;
+    --color-blue-dark: #2563eb;
+    --color-cyan-dark: #0891b2;
+}
+
+/* ═══════════════════════════════════════════════════
+   Tailwind Theme Tokens – statische Werte
+   ═══════════════════════════════════════════════════ */
+@theme {
+    /* Animationen */
+    --animate-spin-cc: spin-cc 1s linear infinite;
+    --animate-pulse-glow: pulse-glow 1s ease-in-out infinite;
+    --animate-blob: blob-pulse 4s ease-in-out infinite;
+    --animate-confetti: confetti-fall 3s ease-out infinite;
+    --animate-particle: particle-float 15s ease-in-out infinite;
+    --animate-waiting: waiting-dot 1.4s ease-in-out infinite both;
+    --animate-error: slide-error 5s ease-in-out forwards;
+
+    /* Semantische Farben (statisch) */
+    --color-success: #10b981;
+    --color-success-dark: #059669;
+    --color-success-darker: #047857;
+    --color-error: #ef4444;
+    --color-error-dark: #dc2626;
+    --color-error-darker: #b91c1c;
+    --color-warning: #fbbf24;
+    --color-warning-dark: #f59e0b;
+    --color-purple: #a855f7;
+    --color-cyan: #06b6d4;
+    --color-blue: #3b82f6;
+    --color-blue-dark: #2563eb;
+    --color-cyan-dark: #0891b2;
+}
+
+/* ═══════════════════════════════════════════════════
+   Tailwind Theme Tokens – inline (lesen CSS-Vars aus :root)
+   Schriftgrößen & dynamische Farben hier ändern → wirkt überall
+   ═══════════════════════════════════════════════════ */
+@theme inline {
+    /* Schriftart */
+    --font-sans: var(--font-family);
+
+    /* Dynamische Farben (ThemeProvider überschreibt) */
+    --color-app-text: var(--text-color);
+    --color-app-sec: var(--text-secColor);
+    --color-app-placeholder: var(--text-placeholderColor);
+    --color-accent1: var(--button-accentColor1);
+    --color-accent1-decent: var(--button-accentColor1decent);
+    --color-accent2: var(--button-accentColor2);
+    --color-accent2-decent: var(--button-accentColor2decent);
+}
+
+/* ═══════════════════════════════════════════════════
+   Font-size Utilities  (Quelle: :root --font-size-*)
+   ═══════════════════════════════════════════════════ */
+@utility text-hero {
+    font-size: var(--font-size-hero);
+}
+@utility text-h1 {
+    font-size: var(--font-size-h1);
+}
+@utility text-h2 {
+    font-size: var(--font-size-h2);
+}
+@utility text-h3 {
+    font-size: var(--font-size-h3);
+}
+@utility text-h4 {
+    font-size: var(--font-size-h4);
+}
+@utility text-subtitle {
+    font-size: var(--font-size-subtitle);
+}
+@utility text-body-lg {
+    font-size: var(--font-size-body-lg);
+}
+
+/* ═══════════════════════════════════════════════════
+   Base
+   ═══════════════════════════════════════════════════ */
+@layer base {
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: var(--font-family);
+        overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+}
+
+/* ═══════════════════════════════════════════════════
+   Animationen
+   ═══════════════════════════════════════════════════ */
+@keyframes pulse-glow {
+    0%, 100% {
+        opacity: 0.7;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes spin-cc {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@keyframes waiting-dot {
+    0%, 80%, 100% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes blob-pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: scale(1.15);
+        opacity: 0.9;
+    }
+}
+
+@keyframes particle-float {
+    0%, 100% {
+        transform: translateY(0px) translateX(0px);
+        opacity: 0.4;
+    }
+    50% {
+        transform: translateY(-40px) translateX(20px);
+        opacity: 0.8;
+    }
+}
+
+@keyframes slide-error {
+    0% {
+        top: -10%;
+        opacity: 0;
+    }
+    10% {
+        top: 7%;
+        opacity: 1;
+    }
+    90% {
+        top: 7%;
+        opacity: 1;
+    }
+    100% {
+        top: -10%;
+        opacity: 0;
+    }
+}
+
+/* ═══════════════════════════════════════════════════
+   Component Classes
+   Nur für Stile die nicht mit Tailwind-Utilities
+   ausgedrückt werden können (Pseudo-Elemente etc.)
+   ═══════════════════════════════════════════════════ */
+@layer components {
+
+    /* Hintergrund-Gradient */
+    .initial-background-color {
+        width: 100%;
+        height: 100%;
+        background: var(--bg-gradient);
+    }
+
+    /* Blob-Animationen */
+    .blob-animate {
+        animation: var(--animate-blob);
+    }
+
+    .blob-animate-1 {
+        animation-delay: 0s;
+        background: var(--blob-1);
+    }
+
+    .blob-animate-2 {
+        animation-delay: 1s;
+        background: var(--blob-2);
+    }
+
+    .blob-animate-3 {
+        animation-delay: 2s;
+        background: var(--blob-3);
+    }
+
+    /* Partikel */
+    .particle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: var(--particle);
+        border-radius: 50%;
+        animation: var(--animate-particle);
+    }
+
+    /* Gradient-Text */
+    .title-gradient-text {
+        background: var(--title-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+    }
+
+    .voting-title-gradient {
+        background: linear-gradient(to right, #ffffff, #fca5a5, #ef4444);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+    }
+
+    /* Liquid Glass Karte */
+    .liquid-glass {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1;
+        border-radius: 56px;
+        position: relative;
+        isolation: isolate;
+        box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.2);
+        border: none;
+        background: none;
+        padding: 0;
+        margin: 0;
+        text-decoration: none;
+        transition: all 0.3s ease;
+
+        &:focus {
+            outline: none;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            border-radius: 56px;
+            box-shadow: inset 0 0 15px -5px var(--box-insetShadowColor);
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+
+        &:hover {
+            transform: scale(1.02);
+        }
+    }
+
+    /* Liquid Glass Input */
+    .liquid-glass-input {
+        border-radius: 56px;
+        position: relative;
+        isolation: isolate;
+        box-shadow: 0 0 12px var(--box-shadowColor);
+        background: none;
+        color: var(--text-color);
+        font-size: var(--font-size-body-lg);
+        height: 3rem;
+        padding: 0 1rem;
+        transition: all 0.3s ease;
+        outline: none;
+        border: 2px solid transparent;
+        width: 100%;
+
+        &::placeholder {
+            color: var(--text-placeholderColor);
+        }
+
+        &:focus {
+            transform: scale(1.01);
+        }
+    }
+
+    .liquid-glass-input-red {
+        &:hover {
+            border-color: var(--button-accentColor1decent);
+        }
+
+        &:focus {
+            border-color: var(--button-accentColor1);
+        }
+    }
+
+    .liquid-glass-input-blue {
+        &:hover {
+            border-color: var(--button-accentColor2decent);
+        }
+
+        &:focus {
+            border-color: var(--button-accentColor2);
+        }
+    }
+
+    .liquid-glass-input-green {
+        &:hover {
+            border-color: rgba(53, 255, 34, 0.2);
+        }
+
+        &:focus {
+            border-color: rgba(53, 255, 34, 0.6);
+        }
+    }
+
+    /* Liquid Glass Button */
+    .liquid-glass-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        height: 3rem;
+        font-weight: 600;
+        font-size: var(--font-size-body-lg);
+        cursor: pointer;
+        position: relative;
+        isolation: isolate;
+        box-shadow: 0 0 12px var(--box-shadowColor);
+        background: none;
+        color: var(--text-color);
+        padding: 0 1rem;
+        transition: all 0.3s ease;
+        outline: none;
+        border: 2px solid transparent;
+        border-radius: 56px;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            border-radius: 56px;
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+
+        &:hover {
+            transform: scale(1.01);
+        }
+    }
+
+    .liquid-glass-button-violet {
+        &:hover {
+            border-color: var(--button-accentColor1);
+        }
+    }
+
+    .liquid-glass-button-blue {
+        &:hover {
+            border-color: var(--button-accentColor2);
+        }
+    }
+
+    .liquid-glass-button-red {
+        &:hover {
+            border-color: rgba(255, 0, 0, 0.8);
+        }
+    }
+
+    .liquid-glass-button-green {
+        &:hover:not(:disabled) {
+            border-color: rgba(53, 255, 34, 0.8);
+        }
+
+        &:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+    }
+
+    /* Lobby Game-Code Button */
+    .lobby-game-code-btn {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 1.5rem;
+        font-size: var(--font-size-h4);
+        font-weight: 700;
+        color: var(--color-purple);
+        letter-spacing: 0.2em;
+        margin: 0 1rem;
+        cursor: pointer;
+        box-shadow: 0 0 24px rgba(0, 0, 0, 0.3);
+        background: none;
+        outline: none;
+        border-radius: 56px;
+        min-width: 180px;
+        min-height: 48px;
+        transition: all 0.5s ease-in-out;
+        border: none;
+        appearance: none;
+        -webkit-appearance: none;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            border-radius: 56px;
+            box-shadow: inset 0 0 15px -5px var(--box-insetShadowColor);
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+    }
+
+    .lobby-id-text {
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    .lobby-copy-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -70%);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease-in-out;
+        width: 30px;
+        height: 20px;
+    }
+
+    .lobby-game-code-btn:hover .lobby-copy-icon {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .lobby-game-code-btn:hover .lobby-id-text {
+        opacity: 0;
+    }
+
+    /* Spieler-Karte (Lobby & Game) */
+    .lobby-player-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(20px);
+        text-align: center;
+        width: 160px;
+        height: 200px;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+        border-radius: 56px;
+        isolation: isolate;
+        box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.2);
+        border: none;
+        background: none;
+        padding: 0;
+        margin: 0;
+        transition: all 0.3s ease;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            border-radius: 56px;
+            box-shadow: inset 0 0 15px -5px #000;
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+
+    .game-page-player-card {
+        width: 200px;
+        height: 240px;
+        padding: 2rem;
+    }
+
+    /* Warte-Punkte */
+    .lobby-waiting-dot {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        animation: waiting-dot 1.4s ease-in-out infinite both;
+        isolation: isolate;
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+        background: none;
+        transition: all 0.3s ease;
+        outline: none;
+        border: 2px solid transparent;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 50%;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+
+        &:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        &:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+    }
+
+    /* Tooltip */
+    .custom-tooltip {
+        background: transparent !important;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4) !important;
+        border-radius: 16px !important;
+        padding: 10px 16px !important;
+        color: var(--text-color) !important;
+    }
+
+    /* Glas-Panel (Spieler-Panel in GamePage) */
+    .glass-panel {
+        backdrop-filter: blur(20px);
+        border-radius: 56px;
+        position: relative;
+        isolation: isolate;
+        border: none;
+        background: none;
+        transition: all 0.3s ease;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            border-radius: 56px;
+            box-shadow: inset 0 6px 24px rgba(0, 0, 0, 0.4);
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+    }
+
+    /* Rollen-Karte (GamePage) */
+    .role-card {
+        backdrop-filter: blur(20px);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+        border-radius: 56px;
+        isolation: isolate;
+        border: 2px solid transparent;
+        background: none;
+        transition: all 0.3s ease;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+
+        &.impostor {
+            border-color: rgba(239, 68, 68, 0.3);
+            box-shadow: inset 0px 6px 24px rgba(255, 0, 0, 0.4);
+        }
+
+        &.regular {
+            border-color: rgba(16, 185, 129, 0.3);
+            box-shadow: inset 0px 6px 24px rgba(36, 255, 0, 0.4);
+        }
+    }
+
+    /* Wort-Anzeige */
+    .word-display {
+        border-radius: 56px;
+        position: relative;
+        isolation: isolate;
+        box-shadow: inset 0 4px 24px rgba(0, 0, 0, 0.4);
+        border: none;
+        background: none;
+        transition: all 0.3s ease;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+    }
+
+    /* Eingabe-Panel (GamePage) */
+    .word-input-panel {
+        border-radius: 56px;
+        position: relative;
+        isolation: isolate;
+        border: none;
+        background: none;
+        transition: all 0.3s ease;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            border-radius: 56px;
+            box-shadow: inset 0 6px 24px rgba(0, 0, 0, 0.4);
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+    }
+
+    /* Abstimmungs-Formular */
+    .voting-form-card {
+        backdrop-filter: blur(20px);
+        font-weight: 600;
+        font-size: var(--font-size-body-lg);
+        isolation: isolate;
+        box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.5);
+        background: none;
+        color: var(--text-color);
+        border: 2px solid transparent;
+        border-radius: 56px;
+        position: relative;
+        transition: all 0.3s ease;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+    }
+
+    /* Spieler-Option (Abstimmung) */
+    .player-option {
+        padding: 1.25rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-weight: 600;
+        font-size: var(--font-size-body-lg);
+        position: relative;
+        isolation: isolate;
+        box-shadow: inset 0 3px 24px rgba(0, 0, 0, 0.5);
+        background: none;
+        color: var(--text-color);
+        border: 2px solid transparent;
+        border-radius: 56px;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+
+        &.selected {
+            box-shadow: inset 0 3px 24px rgba(239, 68, 68, 0.6);
+        }
+
+        &:hover {
+            transform: scale(1.02);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+    }
+
+    .player-radio {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        isolation: isolate;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+        background: none;
+        border: 2px solid transparent;
+    }
+
+    .player-option.selected .player-radio {
+        box-shadow: inset 0 0 8px rgba(239, 68, 68, 0.6);
+        border-color: rgba(239, 68, 68, 0.6);
+    }
+
+    /* Stimme-abgegeben Karte */
+    .vote-submitted-card {
+        backdrop-filter: blur(20px);
+        border-radius: 56px;
+        position: relative;
+        isolation: isolate;
+        box-shadow: inset 0px 2px 24px rgba(0, 0, 0, 0.4);
+        border: none;
+        background: none;
+        transition: all 0.3s ease;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+
+        &:hover {
+            border: 1px solid rgba(70, 255, 70, 0.3);
+        }
+    }
+
+    /* Abstimmen-Button */
+    .vote-button {
+        color: var(--text-color);
+        font-weight: 600;
+        font-size: var(--font-size-body-lg);
+        height: 3.5rem;
+        padding: 0 2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        position: relative;
+        isolation: isolate;
+        box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.5);
+        background: none;
+        outline: none;
+        border: 2px solid transparent;
+        border-radius: 56px;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+
+        &:hover {
+            transform: scale(1.02);
+        }
+
+        &:hover:not(:disabled) {
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        &:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-placeholderColor);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+    }
+
+    /* Konfetti */
+    .confetti-particle {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: linear-gradient(45deg, var(--color-warning), var(--color-warning-dark));
+        animation: confetti-fall 3s ease-out infinite;
+    }
+
+    /* Ergebnis-Hauptkarte */
+    .main-result-card {
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+        border-radius: 56px;
+        isolation: isolate;
+        background: none;
+        transition: all 0.3s ease;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+
+        &.success {
+            border-color: rgba(16, 185, 129, 0.4);
+            box-shadow: inset 0 6px 50px rgba(16, 185, 129, 0.3);
+        }
+
+        &.failure {
+            border-color: rgba(239, 68, 68, 0.4);
+            box-shadow: inset 0 6px 50px rgba(239, 68, 68, 0.3);
+        }
+    }
+
+    /* Glas-Karte (Impostor, Voting-Results) */
+    .glass-card {
+        backdrop-filter: blur(20px);
+        border-radius: 56px;
+        position: relative;
+        isolation: isolate;
+        box-shadow: inset 0 6px 24px rgba(0, 0, 0, 0.4);
+        border: none;
+        background: none;
+        transition: all 0.3s ease;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+    }
+
+    /* Abstimmungs-Ergebnis-Eintrag */
+    .vote-result-item {
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border-radius: 56px;
+        isolation: isolate;
+        box-shadow: inset 0 6px 24px rgba(0, 0, 0, 0.2);
+        border: none;
+        background: none;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+
+        &:hover {
+            transform: translateY(-2px);
+        }
+    }
+
+    /* Fortschrittsbalken */
+    .vote-progress-fill {
+        height: 100%;
+        border-radius: 6px;
+        transition: width 0.8s ease;
+        position: relative;
+        overflow: hidden;
+        padding: 2px;
+
+        &.impostor {
+            box-shadow: inset 0 0 4px rgba(239, 68, 68, 1);
+        }
+
+        &.winner {
+            box-shadow: inset 0 0 4px rgba(16, 185, 129, 1);
+        }
+
+        &.normal {
+            background: linear-gradient(to right, var(--color-cyan), var(--color-blue));
+            box-shadow: inset 0 0 4px rgba(16, 185, 129, 1);
+        }
+    }
+
+    /* Fehlermeldung */
+    .error-message {
+        position: fixed;
+        top: -10%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 1rem;
+        z-index: 9999;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2),
+        0 8px 10px -6px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        width: auto;
+        min-width: 800px;
+        max-width: 90vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        backdrop-filter: blur(8px);
+        animation: slide-error 5s ease-in-out forwards;
+        border-radius: 56px;
+        isolation: isolate;
+        background: none;
+        padding: 0;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(224, 63, 63, 0.5);
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 56px;
+            box-shadow: inset 0 0 15px -5px #000;
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 56px;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            filter: url(#glass-distortion);
+            -webkit-filter: url(#glass-distortion);
+        }
+    }
+
+    .error-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        flex: 1;
+        margin: 10px;
+    }
+
+    .error-content p {
+        margin: 10px;
+        line-height: 1.5;
+        font-weight: 500;
+        text-align: left;
+    }
+
+    .error-remove-button {
+        position: absolute;
+        background: transparent;
+        right: 5%;
+        border: none;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.6);
+        padding: 0.25rem;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+        width: 28px;
+        height: 28px;
+
+        &:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+
+    .error-remove-button svg {
+        width: 20px;
+        height: 20px;
+    }
+}

@@ -1,8 +1,7 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/StartPage.css';
 import ErrorDisplay from '../components/ErrorDisplay.tsx';
 import { PlusIcon } from '../components/icons/PlusIcon';
 import { Profile } from '../components/icons/Profile';
@@ -151,41 +150,33 @@ const StartPage = () => {
 
   // Render the StartPage component
   return (
-    <div className="start-page">
+    <div className="min-h-screen w-full relative overflow-hidden flex flex-col items-center justify-center p-2">
 
-      {/* Main Content */}
-      <div className="start-header-section">
-        <h1 className="start-main-title">Impostor Game</h1>
-        <p className="start-subtitle">A word. An impostor. </p>
+      <div className="text-center mb-12 z-10 relative">
+        <h1 className="text-hero font-bold mb-4 leading-none title-gradient-text">Impostor Game</h1>
+        <p className="text-subtitle text-app-text font-light tracking-wider">A word. An impostor.</p>
       </div>
 
-      <div className="start-forms-container">
+      <div className="flex gap-8 w-full max-w-5xl z-10 relative max-lg:flex-col max-lg:max-w-xl max-md:px-4">
 
         {/* Create Game Card */}
         <div className="liquid-glass">
-          <div className="start-card-header">
-            <h2 className="start-card-title">Spiel Erstellen</h2>
-            <p className="start-card-description">
-              Starte eine neue Runde als Host
-            </p>
+          <div className="text-center px-10 pt-6 pb-2">
+            <h2 className="text-h4 font-bold text-app-text mb-1">Spiel Erstellen</h2>
+            <p className="text-app-sec text-sm">Starte eine neue Runde als Host</p>
           </div>
-          <div className="start-card-content">
-            <form onSubmit={handleCreateGame} className="start-form">
-              <div className="start-input-group">
-                <input
-                  type="text"
-                  required
-                  placeholder="Dein Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="liquid-glass-input liquid-glass-input-red"
-                  maxLength={10}
-                />
-              </div>
-              <button
-                type="submit"
-                className="liquid-glass-button liquid-glass-button-violet"
-              >
+          <div className="px-10 pb-6">
+            <form onSubmit={handleCreateGame} className="flex flex-col gap-4">
+              <input
+                type="text"
+                required
+                placeholder="Dein Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="liquid-glass-input liquid-glass-input-red"
+                maxLength={10}
+              />
+              <button type="submit" className="liquid-glass-button liquid-glass-button-violet">
                 <PlusIcon/>
                 Lobby Erstellen
               </button>
@@ -195,15 +186,13 @@ const StartPage = () => {
 
         {/* Join Game Card */}
         <div className="liquid-glass">
-          <div className="start-card-header">
-            <h2 className="start-card-title">Spiel Beitreten</h2>
-            <p className="start-card-description">
-              Tritt einer bestehenden Lobby bei
-            </p>
+          <div className="text-center px-10 pt-6 pb-2">
+            <h2 className="text-h4 font-bold text-app-text mb-1">Spiel Beitreten</h2>
+            <p className="text-app-sec text-sm">Tritt einer bestehenden Lobby bei</p>
           </div>
-          <div className="start-card-content">
-            <form onSubmit={handleJoinGame} className="start-form">
-              <div className="start-input-group">
+          <div className="px-10 pb-6">
+            <form onSubmit={handleJoinGame} className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4">
                 <input
                   type="text"
                   required
@@ -223,11 +212,8 @@ const StartPage = () => {
                   maxLength={6}
                 />
               </div>
-              <button
-                type="submit"
-                className="liquid-glass-button liquid-glass-button-blue"
-              >
-                <Profile className="liquid-glass-button-svg-startpage"/>
+              <button type="submit" className="liquid-glass-button liquid-glass-button-blue">
+                <Profile className="mb-1"/>
                 Lobby Beitreten
               </button>
             </form>
